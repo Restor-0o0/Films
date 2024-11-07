@@ -36,4 +36,9 @@ class FilmsViewModel(
             }
         }
     }
+    fun getFilmsByGenre(genre: List<String>): List<Film>{
+        return this.filmsList.value?.filter {
+            it.genres.containsAll(genre)
+        } ?: emptyList()
+    }
 }

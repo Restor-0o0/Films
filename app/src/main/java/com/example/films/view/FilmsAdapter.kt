@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.films.R
 import com.example.films.data.Film
 import com.example.films.databinding.FilmItemBinding
@@ -40,6 +41,11 @@ class FilmsAdapter(
             val item = filmsList[position]
             viewBinding.films = item
             viewBinding.clickListener = clickListener
+            Glide
+                .with(viewBinding.image.context)
+                .load(item.image_url)
+                .centerCrop()
+                .into(viewBinding.image)
         }
     }
 }

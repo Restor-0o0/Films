@@ -1,6 +1,7 @@
 package com.example.films.reposetory
 
 import android.content.Context
+import android.util.Log
 import com.example.films.APIFilms
 import com.example.films.data.Film
 import com.example.films.data.FilmsList
@@ -18,9 +19,12 @@ class FilmsReposetoryImpl(
     val api:APIFilms
 ) : FilmsReposetory {
     override suspend fun getAllFilms(): APIResult<FilmsList> {
+        Log.e("DEUUG","tyt")
         if (NetworkManager.isOnline(context)){
+            Log.e("DEUUG","in")
             return try{
                 val response: Response<List<Film>> = this.api.getAllFilms()
+
                 if(response.isSuccessful){
                     Utils.handleApiSuccess(response)
                 }
@@ -28,6 +32,7 @@ class FilmsReposetoryImpl(
                     Utils.handleApiError(response)
                 }
             }catch (e: Exception){
+                Log.e("DEUUG",e.toString())
                 APIResult.Error(e)
             }
         }

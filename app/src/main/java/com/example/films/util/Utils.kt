@@ -9,7 +9,7 @@ object Utils {
         val error = ParseAPIError.parseError(response)
         return APIResult.Error(Exception(error.message))
     }
-    fun  handleApiSuccess(response: Response<List<Film>>): APIResult<FilmsList>{
+    fun <T:Any>  handleApiSuccess(response: Response<List<Film>>): APIResult<FilmsList>{
         response.body()?.let{
             return APIResult.Success(FilmsList(it))
         } ?: return handleApiError(response)

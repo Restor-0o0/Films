@@ -51,8 +51,16 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "kotlin/internal/internal.kotlin_builtins"
+            excludes += "kotlin/reflect/reflect.kotlin_builtins"
+            excludes += "kotlin/kotlin.kotlin_builtins"
+            excludes += "kotlin/coroutines/coroutines.kotlin_builtins"
+            excludes += "kotlin/ranges/ranges.kotlin_builtins"
+            excludes += "kotlin/collections/collections.kotlin_builtins"
+            excludes += "kotlin/annotation/annotation.kotlin_builtins"
         }
     }
+
 }
 
 dependencies {
@@ -77,8 +85,8 @@ dependencies {
 
     //retrofit
     implementation(libs.retrofit)
-    implementation(libs.adapter.rxjava2)
     implementation(libs.converter.gson)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
     //okhttp
     implementation(libs.okhttp)
@@ -86,8 +94,10 @@ dependencies {
 
 
     // Koin for the dependencies injections
+    implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.0.0"))
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.scope)
+    //implementation(libs.koin.androidx.scope)
     implementation(libs.koin.androidx.viewmodel)
 
     // Koin для ViewModel (добавляет поддержку `by viewModel`)
@@ -96,19 +106,32 @@ dependencies {
     // Coroutines for asynchronous calls (and Deferred’s adapter)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
     // lifecycle
     kapt(libs.androidx.lifecycle.compiler)
-    implementation(libs.androidx.lifecycle.extensions)
+    //implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx.v220)
 
     //recyclerview and cardview
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.cardview)
+    //implementation(libs.androidx.cardview)
 
 
-    implementation(libs.picasso)
+    //Glide for list films
+    implementation(libs.glide)
+    kapt(libs.compiler)
+
+
+}
+configurations.all{
+    exclude("org.jetbrains.kotlinx","atomicfu-common")
+    exclude("com.google.auto.value","auto-value")
+    exclude("com.intellij","annotations")
+    resolutionStrategy{
+        force("org.checkerframework:checker-qual:3.12.0")
+    }
+
 }

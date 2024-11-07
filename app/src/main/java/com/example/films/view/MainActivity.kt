@@ -1,47 +1,38 @@
 package com.example.films.view
 
 import android.os.Bundle
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.films.ui.theme.FilmsTheme
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.replace
+import com.example.films.R
+import com.example.films.databinding.MainActivityBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            FilmsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        setContentView(R.layout.main_activity)
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container,ListFilmsFragment::class.java,null)
+            .commit()
+    }
+
+
+    private val onBackPressedCallback = object: OnBackPressedCallback(true){
+
+        override fun handleOnBackPressed() {
+            if(supportFragmentManager.backStackEntryCount > 0){
+                supportFragmentManager.popBackStack()
+            }else{
+                super.handleOnBackCancelled()
             }
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FilmsTheme {
-        Greeting("Android")
     }
 }
