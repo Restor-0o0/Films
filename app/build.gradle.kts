@@ -100,8 +100,6 @@ dependencies {
     //implementation(libs.koin.androidx.scope)
     implementation(libs.koin.androidx.viewmodel)
 
-    // Koin для ViewModel (добавляет поддержку `by viewModel`)
-
 
     // Coroutines for asynchronous calls (and Deferred’s adapter)
     implementation(libs.kotlinx.coroutines.core)

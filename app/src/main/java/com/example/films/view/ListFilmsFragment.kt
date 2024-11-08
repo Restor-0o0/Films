@@ -63,8 +63,9 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
 
         filmsViewModel.filmsList.observe(viewLifecycleOwner, Observer {
+
             if(it.isNotEmpty() && it != null){
-                if(filmsViewModel.selectedGenres.size  >0 )
+                if(filmsViewModel.selectedGenres.size  > 0 )
                 {
                     filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
                 }
@@ -95,7 +96,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
 
     override fun onFilmClick(film: Film) {
-        Log.e("DEBUUUGGG","inn")
+        //Log.e("DEBUUUGGG","inn")
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container,FilmDetailsFragment(film))
             .addToBackStack(null)
@@ -115,7 +116,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     }
 
     override fun reconnect(){
-        Log.e("DEBUUG","in")
+        //Log.e("DEBUUG","in")
         filmsViewModel.getAllFilms()
     }
 

@@ -19,9 +19,9 @@ class FilmsReposetoryImpl(
     val api:APIFilms
 ) : FilmsReposetory {
     override suspend fun getAllFilms(): APIResult<FilmsList> {
-        Log.e("DEUUG","tyt")
+        //Log.e("DEUUG","tyt")
         if (NetworkManager.isOnline(context)){
-            Log.e("DEUUG","in")
+            //Log.e("DEUUG","in")
             return try{
                 val response: Response<FilmsList> = this.api.getAllFilms()
 
@@ -32,7 +32,7 @@ class FilmsReposetoryImpl(
                     Utils.handleApiError(response)
                 }
             }catch (e: Exception){
-                Log.e("DEUUG",e.toString())
+                ///Log.e("DEUUG",e.toString())
                 APIResult.Error(e)
             }
         }

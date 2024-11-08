@@ -31,7 +31,7 @@ class FilmsViewModel(
             when(result){
                 is APIResult.Success->{
                     filmsList.value = result.successData.films
-                    Log.e("DEUUGGg",filmsList.value?.size.toString())
+                    //Log.e("DEUUGGg",filmsList.value?.size.toString())
                     addGenresFromFilmsList(result.successData.films)
                     showLoading.value = null
                 }
@@ -52,8 +52,8 @@ class FilmsViewModel(
             }
         }
         this.genresList.value = setGenres
-        Log.e("DEUUGG",setGenres.size.toString())
-        Log.e("DEUUGG",genresList.value?.size.toString())
+        //Log.e("DEUUGG",setGenres.size.toString())
+        //Log.e("DEUUGG",genresList.value?.size.toString())
 
 
     }

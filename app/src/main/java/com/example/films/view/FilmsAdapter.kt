@@ -34,7 +34,7 @@ class FilmsAdapter(
     fun setFilmsList(films: List<Film>){
         this.filmsList = films
         notifyDataSetChanged()
-        Log.e("DEUUGGG",filmsList.size.toString())
+        //Log.e("DEUUGGG",filmsList.size.toString())
     }
     inner class FilmsViewHolder(
         private val viewBinding: FilmItemBinding

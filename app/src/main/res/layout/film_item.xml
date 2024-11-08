@@ -19,15 +19,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/film_card"
         android:onClick="@{()-> clickListener.onFilmClick(film)}"
-        android:clipToOutline="true"
+
         android:layout_margin="5dp">
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         tools:src="@tools:sample/avatars"
+        android:layout_gravity="center"
+        android:clipToOutline="true"
+        android:background="@drawable/film_card"
 
         />
 
@@ -38,8 +40,6 @@
         android:textColor="@color/black"
         android:textSize="@dimen/film_name_size"
         android:text="@{film.localized_name}"
-        android:padding="5dp"
-        android:breakStrategy="balanced"
-        android:hyphenationFrequency="none"/>
+        android:padding="5dp"/>
     </LinearLayout>
 </layout>
