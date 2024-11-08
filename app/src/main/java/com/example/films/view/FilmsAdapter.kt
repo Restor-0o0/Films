@@ -34,7 +34,6 @@ class FilmsAdapter(
     fun setFilmsList(films: List<Film>){
         this.filmsList = films
         notifyDataSetChanged()
-        //Log.e("DEUUGGG",filmsList.size.toString())
     }
     inner class FilmsViewHolder(
         private val viewBinding: FilmItemBinding
@@ -43,11 +42,16 @@ class FilmsAdapter(
             val item = filmsList[position]
             viewBinding.film = item
             viewBinding.clickListener = clickListener
-            Glide
-                .with(viewBinding.image.context)
-                .load(item.image_url)
-                .centerCrop()
-                .into(viewBinding.image)
+            try{
+                Glide
+                    .with(viewBinding.image.context)
+                    .load(item.image_url)
+                    .centerCrop()
+                    .into(viewBinding.image)
+            }catch (e:Exception){
+                Log.e("GlideError",e.message.toString())
+            }
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.films.viewmodel
 
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,10 @@ class FilmsViewModel(
     val genresList = MutableLiveData<Set<String>>()
     val showError = MutableLiveData<String?>()
     var selectedGenres: Set<String> = emptySet()
+    var create:Boolean = true
+    lateinit var selectedFilm:Film
+    var selectedFilmImage: Bitmap? = null
+
 
 
     fun getAllFilms(){
@@ -27,33 +32,34 @@ class FilmsViewModel(
         genresList.value = emptySet()
         viewModelScope.launch {
             val result =reposetory.getAllFilms()
-
-            when(result){
-                is APIResult.Success->{
-                    filmsList.value = result.successData.films
-                    //Log.e("DEUUGGg",filmsList.value?.size.toString())
-                    addGenresFromFilmsList(result.successData.films)
-                    showLoading.value = null
-                }
-                is APIResult.Error->{
-                    showLoading.value = false
-                    showError.value = result.exception.message
+            try{
+                when(result){
+                    is APIResult.Success->{
+                        filmsList.value = result.successData.films
+                        addGenresFromFilmsList(result.successData.films)
+                        showLoading.value = null
+                    }
+                    is APIResult.Error->{
+                        showLoading.value = false
+                        showError.value = result.exception.message
+                    }
                 }
             }
+            catch (e:Exception){
+                showLoading.value = false
+                showError.value = e.message
+            }
+
         }
     }
     fun addGenresFromFilmsList(films: List<Film>){
         var setGenres: Set<String> = emptySet()
         for(film in films){
-            //Log.e("DEUUGG",film.genres.toString())
             for(item in film.genres){
-                //Log.e("DEUUGG",item)
                 setGenres = setGenres.plus(item)
             }
         }
         this.genresList.value = setGenres
-        //Log.e("DEUUGG",setGenres.size.toString())
-        //Log.e("DEUUGG",genresList.value?.size.toString())
 
 
     }

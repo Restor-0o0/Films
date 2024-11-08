@@ -1,5 +1,6 @@
 package com.example.films.view
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 
@@ -7,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
@@ -28,14 +31,13 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     private lateinit var filmsAdapter : FilmsAdapter
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var viewBinding: FilmsListFragmentBinding
-    private var create:Boolean = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         viewBinding = DataBindingUtil.inflate(inflater,R.layout.films_list_fragment,container,false)
         viewBinding.lifecycleOwner = this
         val rootView = viewBinding.root
@@ -48,11 +50,22 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         genresAdapter = GenresAdapter(context,this)
         viewBinding.viewModel = filmsViewModel
         viewBinding.reconnectButton.setOnClickListener {
-            filmsViewModel.getAllFilms()
+            try{
+                filmsViewModel.getAllFilms()
+            }
+            catch (e: Exception){
+
+            }
+
         }
-        if(create){
-            filmsViewModel.getAllFilms()
-            create = create.not()
+        if(filmsViewModel.create){
+            try{
+                filmsViewModel.getAllFilms()
+            }
+            catch (e: Exception){
+
+            }
+            filmsViewModel.create = filmsViewModel.create.not()
         }
         viewBinding.genreList.layoutManager =LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         viewBinding.genreList.adapter = genresAdapter
@@ -89,18 +102,21 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
 
 
-    override fun onFilmClick(film: Film) {
+    override fun onFilmClick(film: Film,imageBitmap:ImageView) {
         //Log.e("DEBUUUGGG","inn")
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,FilmDetailsFragment(film))
-            .addToBackStack(null)
-            .commit()
+
+        filmsViewModel.selectedFilm = film
+        if(imageBitmap.drawable != null){
+            filmsViewModel.selectedFilmImage = imageBitmap.drawable!!.toBitmap()
+        }
+
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, FilmDetailsFragment())
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onGenreClick(position: Int,genre:String) {
@@ -117,7 +133,12 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     override fun reconnect(){
         //Log.e("DEBUUG","in")
-        filmsViewModel.getAllFilms()
+        try{
+            filmsViewModel.getAllFilms()
+        }
+        catch (e: Exception){
+
+        }
     }
 
 }

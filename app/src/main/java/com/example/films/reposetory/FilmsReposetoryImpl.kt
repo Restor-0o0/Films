@@ -20,26 +20,31 @@ class FilmsReposetoryImpl(
 ) : FilmsReposetory {
     override suspend fun getAllFilms(): APIResult<FilmsList> {
         //Log.e("DEUUG","tyt")
-        if (NetworkManager.isOnline(context)){
-            //Log.e("DEUUG","in")
-            return try{
-                val response: Response<FilmsList> = this.api.getAllFilms()
+        try{
+            if (NetworkManager.isOnline(context)){
+                //Log.e("DEUUG","in")
+                return try{
+                    val response: Response<FilmsList> = this.api.getAllFilms()
 
-                if(response.isSuccessful){
-                    Utils.handleApiSuccess(response)
+                    if(response.isSuccessful){
+                        Utils.handleApiSuccess(response)
+                    }
+                    else{
+                        Utils.handleApiError(response)
+                    }
+                }catch (e: Exception){
+                    ///Log.e("DEUUG",e.toString())
+                    APIResult.Error(e)
                 }
-                else{
-                    Utils.handleApiError(response)
-                }
-            }catch (e: Exception){
-                ///Log.e("DEUUG",e.toString())
-                APIResult.Error(e)
             }
+            else{
+                APIResult.Error(Exception("Ошибка подключения сети"))
+                return context.noNetworkConnectivityError()
+            }
+        }catch (e: Exception){
+            return APIResult.Error(Exception(e))
         }
-        else{
-            APIResult.Error(Exception("Ошибка подключения сети"))
-            return context.noNetworkConnectivityError()
-        }
+
     }
 
 }

@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:onClick="@{()-> clickListener.onFilmClick(film)}"
+        android:onClick="@{()-> clickListener.onFilmClick(film,image)}"
 
         android:layout_margin="5dp">
     <ImageView
@@ -39,6 +39,7 @@
         android:layout_height="70dp"
         android:textColor="@color/black"
         android:textSize="@dimen/film_name_size"
+        android:gravity="center"
         android:text="@{film.localized_name}"
         android:padding="5dp"/>
     </LinearLayout>
