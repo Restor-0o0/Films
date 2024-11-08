@@ -1,6 +1,7 @@
 package com.example.films.view
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -33,13 +34,14 @@ class FilmsAdapter(
     fun setFilmsList(films: List<Film>){
         this.filmsList = films
         notifyDataSetChanged()
+        Log.e("DEUUGGG",filmsList.size.toString())
     }
     inner class FilmsViewHolder(
         private val viewBinding: FilmItemBinding
     ): RecyclerView.ViewHolder(viewBinding.root){
         fun bind(position: Int){
             val item = filmsList[position]
-            viewBinding.films = item
+            viewBinding.film = item
             viewBinding.clickListener = clickListener
             Glide
                 .with(viewBinding.image.context)

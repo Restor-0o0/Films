@@ -12,7 +12,7 @@ import com.example.films.util.noNetworkConnectivityError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.lang.Exception
+import kotlin.Exception
 
 class FilmsReposetoryImpl(
     val context: Context,
@@ -23,7 +23,7 @@ class FilmsReposetoryImpl(
         if (NetworkManager.isOnline(context)){
             Log.e("DEUUG","in")
             return try{
-                val response: Response<List<Film>> = this.api.getAllFilms()
+                val response: Response<FilmsList> = this.api.getAllFilms()
 
                 if(response.isSuccessful){
                     Utils.handleApiSuccess(response)
@@ -37,6 +37,7 @@ class FilmsReposetoryImpl(
             }
         }
         else{
+            APIResult.Error(Exception("Ошибка подключения сети"))
             return context.noNetworkConnectivityError()
         }
     }

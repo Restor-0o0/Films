@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.films.R
+import com.example.films.data.Genre
 import com.example.films.databinding.GenresItemBinding
-import retrofit2.http.POST
 
 class GenresAdapter(
     val context: Context?,
@@ -16,7 +16,7 @@ class GenresAdapter(
 ): RecyclerView.Adapter<GenresAdapter.GenreViewHolder>()  {
 
 
-    private var genreList: List<Pair<String,Boolean>> = ArrayList<Pair<String,Boolean>>()
+    private var genreList: List<Genre> = ArrayList<Genre>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreViewHolder {
         val viewBinding: GenresItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
@@ -28,18 +28,18 @@ class GenresAdapter(
         return genreList.size
     }
 
-    fun setGenres(genres: List<Pair<String,Boolean>>){
+    fun setGenres(genres: List<Genre>){
         this.genreList = genres
         notifyDataSetChanged()
     }
     fun onClick(position:Int){
-        genreList[position].second.not()
+        genreList[position].active = genreList[position].active.not()
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
         holder.bind(position)
-        if(genreList[position].second){
+        if(genreList[position].active){
             context?.let { holder.viewBinding.name.setBackgroundColor(ContextCompat.getColor(it,R.color.orange)) }
         }
         else{
@@ -54,7 +54,8 @@ class GenresAdapter(
 
 
         fun bind(position:Int){
-            viewBinding.genre = genreList[position].first
+            viewBinding.genre = genreList[position].name
+            viewBinding.position = position
             viewBinding.clickListener = clickListener
         }
     }

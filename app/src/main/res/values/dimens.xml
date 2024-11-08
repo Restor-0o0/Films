@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="genres_text_size">35sp</dimen>
+    <dimen name="film_name_size">25sp</dimen>
+    <dimen name="headings_size">45sp</dimen>
+    <dimen name="error_text">18sp</dimen>
+    <dimen name="error_button_text">20sp</dimen>
+    <dimen name="details_fragment_name_size">40dp</dimen>
+    <dimen name="details_fragmet_genre_year_size_text">20sp</dimen>
+    <dimen name="details_fragment_rating_size">40sp</dimen>
+    <dimen name="details_fragment_video_hosting_size_text">20sp</dimen>
+    <dimen name="details_fragment_about_size_text">18sp</dimen>
+</resources>

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    >
+
+
 
     <data>
 
@@ -9,34 +14,114 @@
         <variable
             name="viewModel"
             type="com.example.films.viewmodel.FilmsViewModel" />
+        <variable
+            name="reconnectClickListener"
+            type="com.example.films.view.ReconnectCallListener" />
 
     </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/genres"
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/title_films_list"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_gravity="top" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:visibility="@{viewModel.showLoading == true ? View.VISIBLE : View.GONE}" />
+
+                    <TextView
+                        android:id="@+id/genres"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/abril_fatface"
+                        android:text="Жанры"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/headings_size"
+                        android:visibility="@{viewModel.showLoading == null  ? View.VISIBLE : View.GONE}" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/genre_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.showLoading == null  ? View.VISIBLE : View.GONE}">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/films"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/abril_fatface"
+                        android:text="Фильмы"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/headings_size"
+                        android:visibility="@{viewModel.showLoading == null  ? View.VISIBLE : View.GONE}" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/films_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{viewModel.showLoading == null  ? View.VISIBLE : View.GONE}"
+
+                        >
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/error_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Жанры" />
+            android:layout_gravity="bottom"
+            android:background="@color/error_message"
+            android:minHeight="80dp"
+            android:orientation="horizontal"
+            android:visibility="@{viewModel.showError != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/genre_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:text="@{viewModel.showError}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/error_text" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <Button
+                android:id="@+id/reconnect_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8"
+                android:background="@null"
+                android:text="@string/reconnect"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/error_button_text"
 
-        <TextView
-            android:id="@+id/films"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Фильмы" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/films_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                />
+        </LinearLayout>
     </LinearLayout>
+
 </layout>

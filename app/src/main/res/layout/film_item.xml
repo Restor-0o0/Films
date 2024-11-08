@@ -8,7 +8,7 @@
         <import type="android.view.View"/>
 
         <variable
-            name="films"
+            name="film"
             type="com.example.films.data.Film" />
 
         <variable
@@ -17,18 +17,26 @@
     </data>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/film_card"
+        android:onClick="@{()-> clickListener.onFilmClick(film)}"
+        android:clipToOutline="true"
+        android:layout_margin="5dp">
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:src="@tools:sample/avatars" />
+        android:layout_height="300dp"
+        tools:src="@tools:sample/avatars"
+        />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@{films.name}" />
+        android:layout_height="70dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/film_name_size"
+        android:text="@{film.localized_name}"
+        android:padding="5dp"/>
     </LinearLayout>
 </layout>

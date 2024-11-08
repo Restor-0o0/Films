@@ -5,13 +5,15 @@ import com.example.films.data.FilmsList
 import retrofit2.Response
 
 object Utils {
-    fun  handleApiError(response: Response<List<Film>>): APIResult.Error{
+    fun <T:Any> handleApiError(response: Response<T>): APIResult.Error{
         val error = ParseAPIError.parseError(response)
         return APIResult.Error(Exception(error.message))
     }
-    fun <T:Any>  handleApiSuccess(response: Response<List<Film>>): APIResult<FilmsList>{
+    fun <T:Any>  handleApiSuccess(response: Response<T>): APIResult<T>{
         response.body()?.let{
-            return APIResult.Success(FilmsList(it))
+            return APIResult.Success(it)
         } ?: return handleApiError(response)
     }
+
+
 }

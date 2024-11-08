@@ -2,6 +2,7 @@
 adapterRxjava2 = "2.7.1"
 agp = "8.5.2"
 cardview = "1.0.0"
+constraintlayoutCompose = "1.1.0"
 glide = "4.15.1"
 koinAndroidVersion = "3.4.0"
 koinAndroidxScope = "2.1.6"
@@ -30,6 +31,7 @@ roomCompilerProcessingTesting = "2.6.1"
 
 adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "adapterRxjava2" }
 androidx-cardview = { module = "androidx.cardview:cardview", version.ref = "cardview" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-extensions = { module = "androidx.lifecycle:lifecycle-extensions", version.ref = "lifecycleExtensions" }
 androidx-lifecycle-compiler = { module = "androidx.lifecycle:lifecycle-compiler", version.ref = "lifecycleRuntimeKtx" }

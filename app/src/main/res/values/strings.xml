@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Films</string>
+    <string name="app_name">Фильмы</string>
     <string name="no_network_connect">Отсутствует подключение к сети</string>
     <string name="BASE_URL">https://s3-eu-west-1.amazonaws.com/</string>
+    <string name="reconnect">ПОВТОРИТЬ</string>
+    <string name="year">год</string>
+    <string name="videohosting">КиноПоиск</string>
 </resources>
