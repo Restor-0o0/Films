@@ -78,7 +78,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         filmsViewModel.filmsList.observe(viewLifecycleOwner, Observer {
 
             if(it.isNotEmpty() && it != null){
-                if(filmsViewModel.selectedGenres.size  > 0 )
+                if(filmsViewModel.selectedGenres  != null )
                 {
                     filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
                 }
@@ -93,7 +93,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
                 genresAdapter.setGenres(item.map {
                     Genre(
                         it,
-                        filmsViewModel.selectedGenres.contains(it)
+                        it.contains(filmsViewModel.selectedGenres.toString())
                         )
                 })
 
@@ -121,18 +121,21 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     override fun onGenreClick(position: Int,genre:String) {
 
-        if(filmsViewModel.selectedGenres.contains(genre)){
-            filmsViewModel.selectedGenres = filmsViewModel.selectedGenres - genre
-        }else {
-            filmsViewModel.selectedGenres = filmsViewModel.selectedGenres + genre
+
+
+        genresAdapter.onClick(filmsViewModel.selectedPositionGenre,position)
+        if(filmsViewModel.selectedGenres  == genre){
+            filmsViewModel.selectedGenres = null
+            filmsViewModel.selectedPositionGenre = null
         }
-        //Log.e("DEUUGG",)
+        else{
+            filmsViewModel.selectedGenres = genre
+            filmsViewModel.selectedPositionGenre = position
+        }
         filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
-        genresAdapter.onClick(position)
     }
 
     override fun reconnect(){
-        //Log.e("DEBUUG","in")
         try{
             filmsViewModel.getAllFilms()
         }

@@ -31,9 +31,12 @@ class FilmsAdapter(
         holder.bind(position)
     }
 
-    fun setFilmsList(films: List<Film>){
-        this.filmsList = films
-        notifyDataSetChanged()
+    fun setFilmsList(films: List<Film>?){
+        films?.let {
+            this.filmsList = films
+            notifyDataSetChanged()
+        }
+
     }
     inner class FilmsViewHolder(
         private val viewBinding: FilmItemBinding
