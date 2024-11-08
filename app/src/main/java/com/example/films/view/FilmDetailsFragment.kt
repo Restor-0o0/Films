@@ -35,8 +35,9 @@ class FilmDetailsFragment(
             .load(film.image_url)
             .centerCrop()
             .into(viewBinding.image)
+        viewBinding.title.textView.text = this.film.name
         viewBinding.name.text = this.film.localized_name
-        viewBinding.genresAndYear.text = this.film.genres.joinToString(separator = ",", postfix = ", ").plus(this.film.year.toString().plus(" ").plus(getString(R.string.year)))
+        viewBinding.genresAndYear.text = this.film.genres.joinToString(separator = ", ", postfix = ", ").plus(this.film.year.toString().plus(" ").plus(getString(R.string.year)))
 
         viewBinding.rating.text = round(this.film.rating).toString()
         viewBinding.videoHosting.text = getString(R.string.videohosting)

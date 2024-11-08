@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         tools:src="@tools:sample/avatars"
+
         />
 
     <TextView
@@ -37,6 +38,8 @@
         android:textColor="@color/black"
         android:textSize="@dimen/film_name_size"
         android:text="@{film.localized_name}"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:breakStrategy="balanced"
+        android:hyphenationFrequency="none"/>
     </LinearLayout>
 </layout>

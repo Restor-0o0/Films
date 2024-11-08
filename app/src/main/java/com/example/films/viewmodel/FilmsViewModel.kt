@@ -18,6 +18,8 @@ class FilmsViewModel(
     val filmsList = MutableLiveData<List<Film>>()
     val genresList = MutableLiveData<Set<String>>()
     val showError = MutableLiveData<String?>()
+    var selectedGenres: Set<String> = emptySet()
+
 
     fun getAllFilms(){
         showLoading.value = true
@@ -55,9 +57,9 @@ class FilmsViewModel(
 
 
     }
-    fun getFilmsByGenre(genre: List<String>): List<Film>{
+    fun getFilmsBySelectedGenres(): List<Film>{
         return this.filmsList.value?.filter {
-            it.genres.containsAll(genre)
+            it.genres.containsAll(selectedGenres)
         }?.toList() ?: emptyList()
     }
 }

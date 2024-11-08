@@ -22,19 +22,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:gravity="top">
         <include
             android:id="@+id/title"
             layout="@layout/title_films_list"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_gravity="top" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.showLoading == true ? View.VISIBLE : View.GONE}"
+            >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{viewModel.showLoading == true ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+>
+
+
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:foregroundGravity="center" >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -42,11 +62,6 @@
                     android:padding="10dp"
                     android:orientation="vertical">
 
-                    <ProgressBar
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:visibility="@{viewModel.showLoading == true ? View.VISIBLE : View.GONE}" />
 
                     <TextView
                         android:id="@+id/genres"
@@ -108,7 +123,9 @@
                 android:paddingStart="15dp"
                 android:text="@{viewModel.showError}"
                 android:textColor="@color/white"
-                android:textSize="@dimen/error_text" />
+                android:textSize="@dimen/error_text"
+                android:breakStrategy="balanced"
+                android:hyphenationFrequency="none"/>
 
             <Button
                 android:id="@+id/reconnect_button"
@@ -123,5 +140,5 @@
                 />
         </LinearLayout>
     </LinearLayout>
-
+    </LinearLayout>
 </layout>

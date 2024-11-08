@@ -28,7 +28,6 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     private lateinit var filmsAdapter : FilmsAdapter
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var viewBinding: FilmsListFragmentBinding
-    private lateinit var selectedGenres: Set<String>
     private var create:Boolean = true
 
     override fun onCreateView(
@@ -55,7 +54,6 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
             filmsViewModel.getAllFilms()
             create = create.not()
         }
-        selectedGenres = emptySet()
         viewBinding.genreList.layoutManager =LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         viewBinding.genreList.adapter = genresAdapter
         viewBinding.genreList.isNestedScrollingEnabled = false
@@ -66,12 +64,24 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
         filmsViewModel.filmsList.observe(viewLifecycleOwner, Observer {
             if(it.isNotEmpty() && it != null){
-                filmsAdapter.setFilmsList(it)
+                if(filmsViewModel.selectedGenres.size  >0 )
+                {
+                    filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
+                }
+                else{
+                    filmsAdapter.setFilmsList(it)
+                }
+
             }
         })
         filmsViewModel.genresList.observe(viewLifecycleOwner,Observer{ item ->
             if(item.isNotEmpty() && item != null){
-                genresAdapter.setGenres(item.map { Genre(it, false) })
+                genresAdapter.setGenres(item.map {
+                    Genre(
+                        it,
+                        filmsViewModel.selectedGenres.contains(it)
+                        )
+                })
 
             }
         })
@@ -94,13 +104,13 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     override fun onGenreClick(position: Int,genre:String) {
 
-        if(selectedGenres.contains(genre)){
-            selectedGenres = selectedGenres - genre
+        if(filmsViewModel.selectedGenres.contains(genre)){
+            filmsViewModel.selectedGenres = filmsViewModel.selectedGenres - genre
         }else {
-            selectedGenres = selectedGenres + genre
+            filmsViewModel.selectedGenres = filmsViewModel.selectedGenres + genre
         }
         //Log.e("DEUUGG",)
-        filmsAdapter.setFilmsList(filmsViewModel.getFilmsByGenre(selectedGenres.toList()))
+        filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
         genresAdapter.onClick(position)
     }
 
