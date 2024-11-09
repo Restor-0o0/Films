@@ -33,10 +33,15 @@ class GenresAdapter(
         notifyDataSetChanged()
     }
     fun onClick(positionOld:Int?,positionNew:Int){
-        positionOld?.let {
-            genreList[positionOld].active = genreList[positionOld].active.not()
+        if(positionOld != positionNew){
+            positionOld?.let {
+                genreList[positionOld].active = genreList[positionOld].active.not()
+            }
+            genreList[positionNew].active = genreList[positionNew].active.not()
+        }else{
+            genreList[positionNew].active = genreList[positionNew].active.not()
         }
-        genreList[positionNew].active = genreList[positionNew].active.not()
+
         notifyDataSetChanged()
     }
 
