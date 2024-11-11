@@ -31,7 +31,7 @@ class FilmDetailsFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if(filmsViewModel.selectedFilmImage != null){
-            viewBinding.image.setImageBitmap(filmsViewModel.selectedFilmImage)
+            viewBinding.image.setImageBitmap(filmsViewModel.selectedFilm.image)
         }
         viewBinding.title.textView.text = this.filmsViewModel.selectedFilm.name
         viewBinding.name.text = this.filmsViewModel.selectedFilm.localized_name
@@ -40,7 +40,7 @@ class FilmDetailsFragment(
         }else{
             this.filmsViewModel.selectedFilm.year.toString().plus(" ").plus(getString(R.string.year))
         }
-        viewBinding.rating.text = round(this.filmsViewModel.selectedFilm.rating).toString()
+        viewBinding.rating.text = round(this.filmsViewModel.selectedFilm.rating).toString().plus(" ")
         viewBinding.videoHosting.text = getString(R.string.videohosting)
         viewBinding.description.text = this.filmsViewModel.selectedFilm.description
         viewBinding.title.backButton.setOnClickListener {

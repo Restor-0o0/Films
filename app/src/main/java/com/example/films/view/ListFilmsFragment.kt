@@ -31,7 +31,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     private lateinit var filmsAdapter : FilmsAdapter
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var viewBinding: FilmsListFragmentBinding
-
+    private lateinit var layoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,12 +93,14 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
                 genresAdapter.setGenres(item.map {
                     Genre(
                         it,
-                        it.contains(filmsViewModel.selectedGenres.toString())
-                        )
-                })
+                        filmsViewModel.selectedGenres.contains(it.lowercase())
+                    )
 
+
+                })
             }
         })
+
 
     }
 
@@ -121,15 +123,13 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     override fun onGenreClick(position: Int,genre:String) {
 
-
-
         genresAdapter.onClick(filmsViewModel.selectedPositionGenre,position)
-        if(filmsViewModel.selectedGenres  == genre){
-            filmsViewModel.selectedGenres = null
+        if(filmsViewModel.selectedGenres  == genre.lowercase()){
+            filmsViewModel.selectedGenres = ""
             filmsViewModel.selectedPositionGenre = null
         }
         else{
-            filmsViewModel.selectedGenres = genre
+            filmsViewModel.selectedGenres = genre.lowercase()
             filmsViewModel.selectedPositionGenre = position
         }
         filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
@@ -143,5 +143,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
         }
     }
+
+
 
 }

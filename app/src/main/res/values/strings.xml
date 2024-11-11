@@ -5,4 +5,6 @@
     <string name="reconnect">ПОВТОРИТЬ</string>
     <string name="year">год</string>
     <string name="videohosting">КиноПоиск</string>
+    <string name="genres_heading">Жанры</string>
+    <string name="films_heading">Фильмы</string>
 </resources>

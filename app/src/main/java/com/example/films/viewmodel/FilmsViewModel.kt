@@ -3,9 +3,11 @@ package com.example.films.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.example.films.data.Film
 import com.example.films.reposetory.FilmsReposetory
 import com.example.films.util.APIResult
@@ -19,7 +21,7 @@ class FilmsViewModel(
     val filmsList = MutableLiveData<List<Film>>()
     val genresList = MutableLiveData<Set<String>>()
     val showError = MutableLiveData<String?>()
-    var selectedGenres: String? = null
+    var selectedGenres: String = ""
     var selectedPositionGenre: Int? = null
     var create:Boolean = true
     lateinit var selectedFilm:Film
@@ -60,12 +62,20 @@ class FilmsViewModel(
                 setGenres = setGenres.plus(item)
             }
         }
-        this.genresList.value = setGenres
+
+
+        this.genresList.value = setGenres.map{
+            it.replaceFirstChar {
+                it.uppercase()
+            }
+        }
+            .sorted()
+            .toSet()
 
 
     }
     fun getFilmsBySelectedGenres(): List<Film>? {
-        if (selectedGenres !=null){
+        if (selectedGenres !=""){
             return this.filmsList.value?.filter {
                 it.genres.contains(selectedGenres)
             }?.toList() ?: emptyList()
@@ -75,4 +85,5 @@ class FilmsViewModel(
         }
 
     }
+
 }

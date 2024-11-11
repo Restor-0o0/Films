@@ -26,6 +26,7 @@
         android:textColor="@color/black"
         android:text="@{genre}"
         android:textSize="@dimen/genres_text_size"
+        android:padding="@dimen/films_list_elements_padding"
         android:onClick="@{() -> clickListener.onGenreClick(position,genre)}"
         />
 </layout>

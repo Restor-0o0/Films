@@ -117,7 +117,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
 
-
     //Glide for list films
     implementation(libs.glide)
     kapt(libs.compiler)

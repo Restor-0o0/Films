@@ -18,16 +18,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
                 <ImageView
                     android:id="@+id/image"
-                    android:layout_width="200dp"
-                    android:layout_height="300dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:background="@drawable/film_card"
                     android:clipToOutline="true"
-                    android:layout_margin="10dp"/>
-
+                    android:layout_margin="10dp"
+                    android:adjustViewBounds="true"/>
+                </FrameLayout>
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="match_parent"
@@ -37,6 +40,8 @@
                     android:padding="15dp"
                     android:breakStrategy="balanced"
                     android:hyphenationFrequency="none"
+                    android:gravity="start"
+                    android:textStyle="bold"
                     />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -62,7 +67,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/details_fragment_rating_size"
-                        android:textColor="@color/title"/>
+                        android:textColor="@color/title"
+                        android:textStyle="bold"/>
                     <TextView
                         android:id="@+id/video_hosting"
                         android:layout_width="wrap_content"
