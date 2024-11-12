@@ -1,51 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    >
     <data>
-
         <import type="android.view.View"/>
-
         <variable
             name="film"
             type="com.example.films.data.Film" />
-
         <variable
             name="clickListener"
             type="com.example.films.view.FilmClickListener" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:onClick="@{()-> clickListener.onFilmClick(film,image)}"
-        android:layout_margin="5dp"
-        >
+        android:onClick="@{()-> clickListener.onFilmClick(film, image)}"
+        android:layout_margin="5dp">
 
+        <!-- ImageView для изображения фильма -->
         <ImageView
             android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:background="@drawable/film_card"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            />
-
+        <!-- TextView для названия фильма -->
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="@dimen/film_name_size"
-            android:layout_gravity="bottom"
             android:gravity="start|top"
             android:text="@{film.localized_name}"
             android:padding="5dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="RtlSymmetry" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

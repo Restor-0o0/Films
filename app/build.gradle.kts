@@ -113,9 +113,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx.v220)
 
-    //recyclerview and cardview
+    //recyclerview
     implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.cardview)
 
     //Glide for list films
     implementation(libs.glide)

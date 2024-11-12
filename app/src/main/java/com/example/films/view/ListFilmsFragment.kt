@@ -13,7 +13,10 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.films.R
@@ -22,7 +25,9 @@ import com.example.films.data.Genre
 import com.example.films.databinding.FilmsListFragmentBinding
 
 import com.example.films.viewmodel.FilmsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.scope.Scope
 
 
 class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,ReconnectCallListener {
@@ -31,7 +36,6 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     private lateinit var filmsAdapter : FilmsAdapter
     private lateinit var genresAdapter: GenresAdapter
     private lateinit var viewBinding: FilmsListFragmentBinding
-    private lateinit var layoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +55,8 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         viewBinding.viewModel = filmsViewModel
         viewBinding.reconnectButton.setOnClickListener {
             try{
-                filmsViewModel.getAllFilms()
+
+                filmsViewModel.loadAllFilms()
             }
             catch (e: Exception){
 
@@ -60,7 +65,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         }
         if(filmsViewModel.create){
             try{
-                filmsViewModel.getAllFilms()
+                    filmsViewModel.loadAllFilms()
             }
             catch (e: Exception){
 
@@ -75,31 +80,26 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         viewBinding.filmsList.adapter = filmsAdapter
 
 
-        filmsViewModel.filmsList.observe(viewLifecycleOwner, Observer {
 
-            if(it.isNotEmpty() && it != null){
-                if(filmsViewModel.selectedGenres  != null )
-                {
-                    filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
-                }
-                else{
-                    filmsAdapter.setFilmsList(it)
-                }
-
-            }
-        })
         filmsViewModel.genresList.observe(viewLifecycleOwner,Observer{ item ->
-            if(item.isNotEmpty() && item != null){
-                genresAdapter.setGenres(item.map {
-                    Genre(
-                        it,
-                        filmsViewModel.selectedGenres.contains(it.lowercase())
-                    )
+            lifecycleScope.launch {
+                if(item.isNotEmpty() && item != null){
+                    genresAdapter.setGenres(item.map {
+                        Genre(
+                            it,
+                            filmsViewModel.selectedGenres.contains(it.lowercase())
+                        )
+                    })
+                    if(filmsViewModel.filmsList.value!!.isNotEmpty() && filmsViewModel.filmsList != null){
 
-
-                })
+                        filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
+                    }
+                    filmsViewModel.genresList.removeObservers(viewLifecycleOwner)
+                }
             }
+
         })
+
 
 
     }
@@ -137,7 +137,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
 
     override fun reconnect(){
         try{
-            filmsViewModel.getAllFilms()
+            filmsViewModel.loadAllFilms()
         }
         catch (e: Exception){
 

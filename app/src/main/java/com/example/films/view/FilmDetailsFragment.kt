@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.films.R
 import com.example.films.databinding.FilmDetailsFragmentBinding
 import com.example.films.viewmodel.FilmsViewModel
@@ -30,9 +31,15 @@ class FilmDetailsFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(filmsViewModel.selectedFilmImage != null){
+
+        Glide
+            .with(viewBinding.image.context)
+            .load(this.filmsViewModel.selectedFilm.image_url)
+            .error(R.drawable.glide_error)
+            .into(viewBinding.image)
+        /*if(filmsViewModel.selectedFilmImage != null){
             viewBinding.image.setImageBitmap(filmsViewModel.selectedFilm.image)
-        }
+        }*/
         viewBinding.title.textView.text = this.filmsViewModel.selectedFilm.name
         viewBinding.name.text = this.filmsViewModel.selectedFilm.localized_name
         viewBinding.genresAndYear.text = if(this.filmsViewModel.selectedFilm.genres.isNotEmpty()){

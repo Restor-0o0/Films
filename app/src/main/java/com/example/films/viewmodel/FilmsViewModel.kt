@@ -4,6 +4,8 @@ package com.example.films.viewmodel
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.View
+import androidx.collection.MutableObjectList
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,8 +20,10 @@ class FilmsViewModel(
 ): ViewModel() {
 
     val showLoading = MutableLiveData<Boolean?>()
-    val filmsList = MutableLiveData<List<Film>>()
-    val genresList = MutableLiveData<Set<String>>()
+    val _filmsList = MutableLiveData<List<Film>>()
+    val filmsList: LiveData<List<Film>> get() = _filmsList
+    val _genresList = MutableLiveData<Set<String>>()
+    val genresList: LiveData<Set<String>> get() = _genresList
     val showError = MutableLiveData<String?>()
     var selectedGenres: String = ""
     var selectedPositionGenre: Int? = null
@@ -29,16 +33,16 @@ class FilmsViewModel(
 
 
 
-    fun getAllFilms(){
+    fun loadAllFilms(){
         showLoading.value = true
         showError.value = null
-        genresList.value = emptySet()
+        _genresList.value = emptySet()
         viewModelScope.launch {
             val result =reposetory.getAllFilms()
             try{
                 when(result){
                     is APIResult.Success->{
-                        filmsList.value = result.successData.films
+                        _filmsList.value = result.successData.films
                         addGenresFromFilmsList(result.successData.films)
                         showLoading.value = null
                     }
@@ -55,7 +59,10 @@ class FilmsViewModel(
 
         }
     }
-    fun addGenresFromFilmsList(films: List<Film>){
+    fun getAllFilms(): List<Film>?{
+        return filmsList.value
+    }
+    suspend fun addGenresFromFilmsList(films: List<Film>){
         var setGenres: Set<String> = emptySet()
         for(film in films){
             for(item in film.genres){
@@ -64,7 +71,7 @@ class FilmsViewModel(
         }
 
 
-        this.genresList.value = setGenres.map{
+        this._genresList.value = setGenres.map{
             it.replaceFirstChar {
                 it.uppercase()
             }

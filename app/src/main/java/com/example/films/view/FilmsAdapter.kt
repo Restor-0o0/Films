@@ -61,7 +61,12 @@ class FilmsAdapter(
             viewBinding.clickListener = clickListener
             try{
 
-                    if(filmsList[position].image != null) {
+                Glide
+                    .with(viewBinding.image.context)
+                    .load(item.image_url)
+                    .error(R.drawable.glide_error)
+                    .into(viewBinding.image)
+                    /*if(filmsList[position].image != null) {
                         Log.e("Glide","storage")
                         viewBinding.image.setImageBitmap(filmsList[position].image)
                     }
@@ -101,7 +106,7 @@ class FilmsAdapter(
                             .error(R.drawable.glide_error)
                             .into(viewBinding.image)
 
-                    }
+                    }*/
 
 
 
