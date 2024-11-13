@@ -13,6 +13,9 @@
         <variable
             name="reconnectClickListener"
             type="com.example.films.view.ReconnectCallListener" />
+        <variable
+            name="ScrollToGenresClickListener"
+            type="com.example.films.view.ScrollToGenresClickListener" />
 
     </data>
 
@@ -52,7 +55,24 @@
                 android:visibility="@{viewModel.showLoading == true ? View.VISIBLE : View.GONE}"
                 />
         </FrameLayout>
-        <androidx.core.widget.NestedScrollView
+        <TextView
+            android:id="@+id/scroll_to_genres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/abril_fatface"
+            android:text="@string/genres_heading"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:textSize="@dimen/headings_size"
+            android:clickable="true"
+            android:padding="@dimen/films_list_elements_padding"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationZ="10dp"/>
+        <ScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -117,7 +137,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:nestedScrollingEnabled="false"
                     android:padding="5dp"
                     android:visibility="@{viewModel.showLoading == null ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/films"
@@ -125,7 +144,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/error_view"

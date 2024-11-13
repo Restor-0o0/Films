@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -110,8 +111,11 @@ class FilmsAdapter(
 
 
 
+                if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S){
+                    viewBinding.image.clipToOutline = true
+                }
 
-                viewBinding.image.clipToOutline = true
+
             }catch (e:Exception){
                 Log.e("GlideError",e.message.toString())
             }
