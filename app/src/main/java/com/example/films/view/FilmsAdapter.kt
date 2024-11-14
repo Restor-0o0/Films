@@ -59,6 +59,7 @@ class FilmsAdapter(
         fun bind(position: Int){
             val item = filmsList[position]
             viewBinding.film = item
+            viewBinding.position = position
             viewBinding.clickListener = clickListener
             try{
 

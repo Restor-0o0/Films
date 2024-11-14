@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:background="@null"
-                    android:focusable="true"
+                    android:focusable="false"
                     android:visibility="@{viewModel.showLoading == null ? View.VISIBLE : View.GONE}"
                     app:layout_constraintTop_toBottomOf="@id/genres"
                     app:layout_constraintStart_toStartOf="parent"

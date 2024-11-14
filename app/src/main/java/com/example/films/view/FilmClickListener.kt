@@ -5,5 +5,5 @@ import android.widget.ImageView
 import com.example.films.data.Film
 
 interface FilmClickListener {
-    fun onFilmClick(film: Film, imageBitmap: ImageView)
+    fun onFilmClick(film: Film, imageBitmap: ImageView, position: Integer)
 }

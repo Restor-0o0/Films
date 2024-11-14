@@ -3,6 +3,7 @@ package com.example.films.view
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.os.ParcelableCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -54,8 +56,10 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         filmsAdapter = FilmsAdapter(context,this)
+        filmsAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
         genresAdapter = GenresAdapter(context,this)
         viewBinding.viewModel = filmsViewModel
+
         viewBinding.reconnectButton.setOnClickListener {
             try{
                 filmsViewModel.loadAllFilms()
@@ -77,16 +81,14 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
             }
 
         })
+
         viewBinding.genreList.layoutManager =LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
         viewBinding.genreList.adapter = genresAdapter
         viewBinding.genreList.isNestedScrollingEnabled = false
         viewBinding.filmsList.layoutManager= GridLayoutManager(context,2)
         viewBinding.filmsList.adapter = filmsAdapter
 
-
-
         viewBinding.nestedScrollView.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            val genre_rect = Rect()
             val genres_list_rect = Rect()
             viewBinding.genreList.getHitRect(genres_list_rect)
             if(viewBinding.genreList.getLocalVisibleRect(genres_list_rect)){
@@ -108,34 +110,30 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
                     })
                     if(filmsViewModel.filmsList.value!!.isNotEmpty() && filmsViewModel.filmsList != null){
 
+
                         filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
+
                     }
-                    filmsViewModel.genresList.removeObservers(viewLifecycleOwner)
                 }
             }
 
         })
-
-
-
-    }
-
-
-
-    override fun onFilmClick(film: Film,imageBitmap:ImageView) {
-        //Log.e("DEBUUUGGG","inn")
-
-        filmsViewModel.selectedFilm = film
-        if(imageBitmap.drawable != null){
-            filmsViewModel.selectedFilmImage = imageBitmap.drawable!!.toBitmap()
+        viewBinding.filmsList.adapter?.let { adapter ->
+            adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            viewBinding.filmsList.post {
+                viewBinding.filmsList.layoutManager?.onRestoreInstanceState(filmsViewModel.filmsListState)
+                adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+            }
+        }
+        if (filmsViewModel.mainScrollPosition > 0){
+            viewBinding.nestedScrollView.post {
+                viewBinding.nestedScrollView.scrollBy(0,filmsViewModel.mainScrollPosition)
+            }
         }
 
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, FilmDetailsFragment())
-                .addToBackStack(null)
-                .commit()
     }
+
 
     override fun onGenreClick(position: Int,genre:String) {
 
@@ -160,6 +158,28 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
         }
     }
 
+    override fun onFilmClick(film: Film, imageBitmap: ImageView, position: Integer) {
+        filmsViewModel.filmsListState = viewBinding.filmsList.layoutManager?.onSaveInstanceState()
+        filmsViewModel.mainScrollPosition = viewBinding.nestedScrollView.scrollY
+        Log.e("DEBUUUUUGG",filmsViewModel.mainScrollPosition.toString())
+        filmsViewModel.selectedFilm = film
+        if(imageBitmap.drawable != null){
+            filmsViewModel.selectedFilmImage = imageBitmap.drawable!!.toBitmap()
+        }
 
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, FilmDetailsFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        filmsViewModel.filmsListState?.let {
+            viewBinding.filmsList.layoutManager?.onRestoreInstanceState(filmsViewModel.filmsListState)
+        }
+    }
 }
 

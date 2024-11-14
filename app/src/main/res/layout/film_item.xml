@@ -11,12 +11,15 @@
         <variable
             name="clickListener"
             type="com.example.films.view.FilmClickListener" />
+        <variable
+            name="position"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{()-> clickListener.onFilmClick(film, image)}"
+        android:onClick="@{()-> clickListener.onFilmClick(film, image,position)}"
 
         android:layout_margin="5dp">
 

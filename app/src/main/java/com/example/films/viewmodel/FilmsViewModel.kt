@@ -2,6 +2,7 @@ package com.example.films.viewmodel
 
 
 import android.graphics.Bitmap
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import androidx.collection.MutableObjectList
@@ -30,7 +31,8 @@ class FilmsViewModel(
     var create:Boolean = true
     lateinit var selectedFilm:Film
     var selectedFilmImage: Bitmap? = null
-
+    var filmsListState: Parcelable? = null
+    var mainScrollPosition: Int =0
 
 
     fun loadAllFilms(){
