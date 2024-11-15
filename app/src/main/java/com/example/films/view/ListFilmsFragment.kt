@@ -146,6 +146,7 @@ class ListFilmsFragment : Fragment(),FilmClickListener,GenreClickListener,Reconn
             filmsViewModel.selectedGenres = genre.lowercase()
             filmsViewModel.selectedPositionGenre = position
         }
+
         filmsAdapter.setFilmsList(filmsViewModel.getFilmsBySelectedGenres())
     }
 

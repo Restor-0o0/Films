@@ -33,16 +33,25 @@ class GenresAdapter(
         notifyDataSetChanged()
     }
     fun onClick(positionOld:Int?,positionNew:Int){
-        if(positionOld != positionNew){
+        /*if(positionOld != positionNew){
             positionOld?.let {
                 genreList[positionOld].active = genreList[positionOld].active.not()
             }
             genreList[positionNew].active = genreList[positionNew].active.not()
         }else{
             genreList[positionNew].active = genreList[positionNew].active.not()
+        }*/
+        genreList[positionNew].active = genreList[positionNew].active.not()
+        genreList.forEachIndexed { index, genre ->
+            if(genre.active == true && index != positionNew)
+            {
+                genre.active = false
+                notifyItemChanged(index)
+            }
+
         }
 
-        notifyDataSetChanged()
+        notifyItemChanged(positionNew)
     }
 
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
